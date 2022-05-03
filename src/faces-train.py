@@ -32,7 +32,9 @@ for root, dirs, files in os.walk(image_dir):
             pil_image = Image.open(path).convert("L")  # grayscale
             size = (550, 550)
             final_image = pil_image.resize(size, Image.ANTIALIAS)
-            image_array = np.array(final_image, "uint8")
+            # size = (550, 550)
+            # final_image = pil_image.resize(size, Image.ANTIALIAS)
+            image_array = np.array(pil_image, "uint8")
             # print(image_array)
             faces = face_cascade.detectMultiScale(
                 image_array, scaleFactor=1.5, minNeighbors=5)
@@ -46,8 +48,16 @@ for root, dirs, files in os.walk(image_dir):
 # print(y_labels)
 # print(x_train)
 
-with open("pickles/face-labels.pickle", 'wb') as f:
+
+with open("labels.pickle", 'wb') as f:
     pickle.dump(label_ids, f)
 
 recognizer.train(x_train, np.array(y_labels))
-recognizer.save("recognizers/face-trainner.yml")
+recognizer.save("trainner.yml")
+
+# real
+# with open("pickles/face-labels.pickle", 'wb') as f:
+#     pickle.dump(label_ids, f)
+
+# recognizer.train(x_train, np.array(y_labels))
+# recognizer.save("recognizers/face-trainner.yml")
